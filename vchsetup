@@ -1,0 +1,52 @@
+#!/bin/bash
+
+if [ ! $(which ronn) ]; then
+   echo "install ronn gem"
+   exit 128
+fi
+
+/bin/echo -n "OS type: "
+case "$OSTYPE" in
+  darwin*)  echo "OSX" ;; 
+  linux*)   echo "LINUX" ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac
+echo
+
+if [[ $OSTYPE == darwin* ]]; then
+   brew install mr vcsh
+elif [[ $OSTYPE == linux* ]]; then
+   VCHDIR="${HOME}/.vch"
+   MRGIT="${VCHDIR}/myrepos"
+   VCSHGIT="${VCHDIR}/vcsh"
+   DESTDIR="${VCHDIR}"
+   mkdir -vp ${VCHDIR} ${MRGIT} ${VCSHGIT} ${DESTDIR}
+
+   if [ ! -d ${MRGIT}/.git ]; then
+      git clone git@github.com:joeyh/myrepos.git ${MRGIT}
+   else
+      git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git pull
+   fi
+   make -C ${MRGIT} DESTDIR=${DESTDIR} install
+
+   if [ ! -d ${VCSHGIT}/.git ]; then
+      git clone git@github.com:RichiH/vcsh.git ${VCSHGIT}
+   else
+      git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git pull
+   fi
+   make -C ${VCSHGIT} DESTDIR=${DESTDIR} install
+fi
+
+if [[ $OSTYPE == linux* ]]; then
+   echo ; echo
+   if [ $SHELL == '/bin/tcsh' ]; then
+      echo 'set path = ( ${HOME}/.vch/usr/bin $path )'
+      echo 'rehash'
+   elif [ $SHRLL == '/bin/bash' ]; then
+      echo 'export PATH="${HOME}/.vch/usr/bin:$path"'
+   else
+      echo "berp"
+   fi
+   echo ; echo
+fi
+

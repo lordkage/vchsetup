@@ -17,31 +17,28 @@ if [[ $OSVER == unknown ]]; then
    echo "Don't know what to do; exiting, badly."
    exit 1
 elif [[ $OSTYPE == darwin* ]]; then
+
    brew update
    xc=$?; if [ $xc -ne 0 ]; then exit $nc; fi
    echo
 
    brew ls mr > /dev/null 2>&1
-   xc=$?
-   if [ $xc -ne 0 ]; then
-      brew install mr
-   else
-      brew upgrade mr
-   fi
-
+   xc=$?; if [ $xc -ne 0 ]; then brew install mr; else brew upgrade mr; fi
    echo
 
    brew ls vcsh > /dev/null 2>&1
-   xc=$?
-   if [ $xc -ne 0 ]; then
-      brew install vcsh
-   else
-      brew upgrade vcsh
-   fi
+   xc=$?; if [ $xc -ne 0 ]; then brew install vcsh; else brew upgrade vcsh; fi
+   echo
+
+   brew ls git-crypt > /dev/null 2>&1
+   xc=$?; if [ $xc -ne 0 ]; then brew install git-crypt; else brew upgrade git-crypt; fi
+   echo
+
 elif [[ $OSTYPE == linux* ]]; then
    VCHDIR="${HOME}/.vch"
    MRGIT="${VCHDIR}/myrepos"
    VCSHGIT="${VCHDIR}/vcsh"
+   GITCRYPT="${VCHDIR}/git-crypt"
    DESTDIR="${VCHDIR}"
    mkdir -vp ${VCHDIR} ${MRGIT} ${VCSHGIT} ${DESTDIR}
 
@@ -51,7 +48,6 @@ elif [[ $OSTYPE == linux* ]]; then
       git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git pull
    fi
    make -C ${MRGIT} DESTDIR=${DESTDIR} install
-
    echo
 
    if [ ! -d ${VCSHGIT}/.git ]; then
@@ -60,6 +56,16 @@ elif [[ $OSTYPE == linux* ]]; then
       git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git pull
    fi
    make -C ${VCSHGIT} DESTDIR=${DESTDIR} install
+   echo
+
+   if [ ! -d ${GITCRYPT}/.git ]; then
+      git clone git@github.com:AGWA/git-crypt.git ${GITCRYPT}
+   else
+      git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git pull
+   fi
+   make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr
+   make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr install
+   echo
 
    export PATH="${HOME}/.vch/usr/bin:$path"
 fi
@@ -73,10 +79,10 @@ echo ; echo
 
 if [[ $OSTYPE == darwin* ]]; then
    if [ $SHELL == '/bin/tcsh' ]; then
-#      echo 'set path = ( ${HOME}/.vch/usr/bin $path )'
+      echo 'set path = ( ${HOME}/.vch/usr/bin $path )'
       echo 'rehash'
    elif [ $SHRLL == '/bin/bash' ]; then
-#      echo 'export PATH="${HOME}/.vch/usr/bin:$path"'
+      echo 'export PATH="${HOME}/.vch/usr/bin:$path"'
    else
       echo "berp"
    fi

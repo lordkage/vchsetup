@@ -2,18 +2,24 @@
 
 /bin/echo -n "OS type: "
 case "$OSTYPE" in
-  darwin*)  echo "OSX" ; export OSVER='OSX' ;; 
-  linux*)   echo "LINUX" ; export OSVER='LINUX' ;;
-  *)        echo "unknown: $OSTYPE" ; export OSVER='unknown' ;;
+  darwin*)  echo -e "\033[32mOSX\033[0m" ; export OSVER='OSX' ;; 
+  linux*)   echo -e "\033[32mLINUX\033[0m" ; export OSVER='LINUX' ;;
+  *)        echo -e "unknown: \033[31m$OSTYPE\033[0m" ; export OSVER='unknown' ;;
 esac
 echo
 
 if [ ! $OSVER == 'OSX' ] && [ ! $(which ronn) ]; then
-   echo "install ronn gem"
+   echo -e "\033[31minstall ronn gem\033[0m"
    exit 128
 fi
 
 APPLIST='myrepos vcsh git-crypt'
+
+VCHDIR="${HOME}/.vch"
+MRGIT="${VCHDIR}/myrepos"
+VCSHGIT="${VCHDIR}/vcsh"
+GITCRYPT="${VCHDIR}/git-crypt"
+DESTDIR="${VCHDIR}"
 
 if [[ $OSVER == unknown ]]; then
    echo "Don't know what to do; exiting, badly."
@@ -30,49 +36,63 @@ elif [[ $OSTYPE == darwin* ]]; then
       brew ls $APP > /dev/null 2>&1
       xc=$?
       if [ $xc -ne 0 ]; then
-         echo -e "\093[32mInstalling $APP\033[0m"
+         echo -e "\033[93mInstalling $APP\033[0m"
          brew install $APP
       else
-         echo -e "\096[32mAttempting to upgrade $APP\033[0m"
+         echo -e "\033[96mAttempting to upgrade $APP\033[0m"
          brew upgrade $APP
       fi
       echo
    done
 
 elif [[ $OSTYPE == linux* ]]; then
-   VCHDIR="${HOME}/.vch"
-   MRGIT="${VCHDIR}/myrepos"
-   VCSHGIT="${VCHDIR}/vcsh"
-   GITCRYPT="${VCHDIR}/git-crypt"
-   DESTDIR="${VCHDIR}"
-   mkdir -vp ${VCHDIR} ${MRGIT} ${VCSHGIT} ${DESTDIR}
 
+   echo -e "\033[32mChecking local directories\033[0m"
+   mkdir -vp ${VCHDIR} ${MRGIT} ${VCSHGIT} ${DESTDIR}
+   echo
+
+   echo -e "\033[32mChecking for myrepos\033[0m"
    if [ ! -d ${MRGIT}/.git ]; then
+      echo -e "\033[94mInstalling GIT repo of myrepos\033[0m"
       git clone git@github.com:joeyh/myrepos.git ${MRGIT}
    else
+      echo -e "\033[96mUpdating GIT repo of myrepos\033[0m"
       git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git pull
    fi
+   echo -e "\033[93mInstalling myrepos\033[0m"
    make -C ${MRGIT} DESTDIR=${DESTDIR} install
    echo
 
+   echo -e "\033[32mChecking for vcsh\033[0m"
    if [ ! -d ${VCSHGIT}/.git ]; then
+      echo -e "\033[94mInstalling GIT repo of vcsh\033[0m"
       git clone git@github.com:RichiH/vcsh.git ${VCSHGIT}
    else
+      echo -e "\033[96mUpdating GIT repo of vcsh\033[0m"
       git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git pull
    fi
+   echo -e "\033[93mInstalling vcsh\033[0m"
    make -C ${VCSHGIT} DESTDIR=${DESTDIR} install
    echo
 
+   echo -e "\033[32mChecking for git-crypt\033[0m"
    if [ ! -d ${GITCRYPT}/.git ]; then
+      echo -e "\033[94mInstalling GIT repo of git-crypt\033[0m"
       git clone git@github.com:AGWA/git-crypt.git ${GITCRYPT}
    else
+      echo -e "\033[95mCleaning GIT repo git-crypt\033[0m"
+      make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr clean
+      echo -e "\033[96mUpdating GIT repo of git-crypt\033[0m"
       git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git pull
    fi
+   echo -e "\033[95mBuilding git-crypt\033[0m"
    make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr
+   echo -e "\033[93mInstalling git-crypt\033[0m"
    make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr install
    echo
 
    export PATH="${HOME}/.vch/usr/bin:$path"
+
 fi
 
 echo ; echo

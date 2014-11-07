@@ -98,6 +98,12 @@ fi
 echo ; echo
 
 # IMP - Add key collection/creation
+if [ -d ${HOME}/.ssh ] && [ -f ${HOME}/.ssh/id_{r,d}sa ]; then
+else
+   if [ ! -d ${HOME}/.ssh ]; then mkdir ${HOME}/.ssh; fi
+   /usr/bin/ssh-keygen -P '' -f ${HOME}/.ssh/id_rsa
+fi
+
 # IMP - Add repo collection/creation
 
 echo ; echo

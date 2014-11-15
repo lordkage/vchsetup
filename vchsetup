@@ -98,11 +98,11 @@ fi
 echo ; echo
 
 # IMP - Add key collection/creation
-if [ -d ${HOME}/.ssh ]; then
-   if [ -e ${HOME}/.ssh/id_rsa ]; then
-      KEY=$(/bin/cat ${HOME}/.ssh/id_rsa)
-   elif [ -e ${HOME}/.ssh/id_dsa ]; then
-      KEY=$(/bin/cat ${HOME}/.ssh/id_dsa)
+if [ -f ${HOME}/.ssh/id_rsa ] || [ -f ${HOME}/.ssh/id_dsa ]; then
+   if [ -f ${HOME}/.ssh/id_rsa.pub ]; then
+      KEY=$(/bin/cat ${HOME}/.ssh/id_rsa.pub)
+   elif [ -f ${HOME}/.ssh/id_dsa.pub ]; then
+      KEY=$(/bin/cat ${HOME}/.ssh/id_dsa.pub)
    else
       echo "berp"
       exit 128
@@ -110,7 +110,7 @@ if [ -d ${HOME}/.ssh ]; then
 else
    if [ ! -d ${HOME}/.ssh ]; then mkdir ${HOME}/.ssh; fi
    /usr/bin/ssh-keygen -P '' -f ${HOME}/.ssh/id_rsa
-   KEY=$(/bin/cat ${HOME}/.ssh/id_rsa)
+   KEY=$(/bin/cat ${HOME}/.ssh/id_rsa.pub)
 fi
 
 echo -e '\033[32mCurrent public SSH key\033[0m'
@@ -123,10 +123,9 @@ echo ; echo
 
 if [[ $OSTYPE == darwin* ]]; then
    if [ $SHELL == '/bin/tcsh' ]; then
-      echo 'set path = ( ${HOME}/.vch/usr/bin $path )'
       echo 'rehash'
    elif [ $SHELL == '/bin/bash' ]; then
-      echo 'export PATH="${HOME}/.vch/usr/bin:$path"'
+      echo
    else
       echo "berp"
    fi

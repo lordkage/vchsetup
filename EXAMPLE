@@ -1,0 +1,56 @@
+[forsaken] kage 11:48 Sun ~>vcsh init tmux
+Initialized empty shared Git repository in /home/kage/.config/vcsh/repo.d/tmux.git/
+/home/kage/.gitignore.d
+
+[forsaken] kage 12:07 Sun ~>vcsh tmux add .tmux.conf
+
+[forsaken] kage 14:39 Sun ~>touch .gitignore.d/tmux
+
+[forsaken] kage 14:44 Sun ~>vcsh write-gitignore tmux
+vcsh: info: '/home/kage/.gitignore.d/tmux' differs from new data, moving it to '/home/kage/.gitignore.d/tmux.bak'
+
+[forsaken] kage 14:58 Sun ~>vcsh tmux commit -m "Initial Commit of .tmux.conf for vcsh tmux"
+[master (root-commit) c79d846] Initial Commit of .tmux.conf for vcsh tmux
+ 2 files changed, 41 insertions(+)
+ create mode 100644 .gitignore.d/tmux
+ create mode 100644 .tmux.conf
+
+[forsaken] kage 14:58 Sun ~>vcsh tmux remote add origin gitosis@gitosis.temporalflux.org:dot/tmux.git
+
+[forsaken] kage 16:08 Sun ~>vcsh tmux push -u origin master
+Initialized empty Git repository in /home/gitosis/repositories/dot/tmux.git/
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (5/5), 785 bytes | 0 bytes/s, done.
+Total 5 (delta 0), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/tmux.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+[forsaken] kage 16:09 Sun ~>vcsh tmux status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+   modified:   .gitignore.d/tmux
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+[forsaken] kage 16:11 Sun ~>vcsh tmux commit -a
+[master e5b08cc] Adding the gitignore file
+ 1 file changed, 4 insertions(+)
+
+[forsaken] kage 16:12 Sun ~>vcsh tmux push
+Address 204.238.213.238 maps to unused238.temporalflux.org, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
+Counting objects: 7, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 369 bytes | 0 bytes/s, done.
+Total 4 (delta 0), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/tmux.git
+   c79d846..e5b08cc  master -> master
+

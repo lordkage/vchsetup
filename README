@@ -1,0 +1,36 @@
+vcsh init vim
+vcsh vim add ~/.vimrc ~/.vim
+vcsh write-gitignore vim
+vcsh vim add -f .gitignore.d/vim
+vcsh write-gitignore vim
+vcsh vim add .gitignore.d/vim
+vcsh vim commit -m 'Initial commit of my Vim configuration'
+# optionally push your files to a remote
+vcsh vim remote add origin <remote>
+vcsh vim push -u origin master
+# from now on you can push additional commits like this
+vcsh vim push
+
+ASSUMPTIONS
+ - vcsh installed, up-to-date: older than 2014-02-21
+ - git-crypt installed
+ - VCSH repo named 'foo'
+
+ - Update your vcsh repo
+vcsh upgrade foo
+ - Create the gitattributes file for this repo
+mkdir ~/.gitattributes.d
+touch ~/.gitattributes.d/foo
+ - Add it to git your git repo
+vcsh repo add ~/.gitattributes.d/foo
+ - Follow the readme of git-crypt until the .gitattributes part
+ - Instead of .gitattributes, put the config in ~/.gitattributes.d/foo
+cat >~/.gitattrubutes.d/foo<<EOD
+secret filter=git-crypt diff=git-crypt
+passwds filter=git-crypt diff=git-crypt
+*magic* filter=git-crypt diff=git-crypt
+EOD
+ - Continue the readme of git-crypt
+git-crypt init
+git-crypt add-gpg-user DFE3287A
+

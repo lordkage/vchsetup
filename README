@@ -1,3 +1,5 @@
+grep forsaken EXAMPLE.vcsh | awk -F'~>' '{ print $NF }' | sed -e 's/tmux/vimrc/g'
+
 vcsh init vim
 vcsh vim add ~/.vimrc ~/.vim
 vcsh write-gitignore vim

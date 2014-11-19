@@ -1,0 +1,147 @@
+[squee] 2014-11-19 10:17:19 -0800 ~>vcsh init vimrc
+Initialized empty shared Git repository in /Users/Brian/.config/vcsh/repo.d/vimrc.git/
+
+[squee] 2014-11-19 10:22:26 -0800 ~>vcsh vimrc add .vimrc .vim/
+
+[squee] 2014-11-19 10:22:26 -0800 ~>vcsh vimrc add .vimrc
+
+[squee] 2014-11-19 10:23:12 -0800 ~>find .vim -name .gitkeep -exec vcsh vimrc add '{}' \;
+
+[squee] 2014-11-19 10:24:54 -0800 ~>touch .gitignore.d/vimrc
+
+[squee] 2014-11-19 10:28:34 -0800 ~>vcsh vimrc add .vim/.netrwhist .vim/colors/greens.vim .vim/git.zip .vim/pw.vim .vim/spell/en.latin1.add .vim/spell/en.latin1.add.spl .vim/spell/en.utf-8.add .vim/spell/en.utf-8.add.spl .vim/syntax/tmux.vim .vim/vimMap .vim/vimrcFkeys
+
+[squee] 2014-11-19 10:29:59 -0800 ~>rm .gitignore.d/vimrc.bak
+
+[squee] 2014-11-19 10:32:10 -0800 ~>vcsh vimrc commit -m "Initial Commit of .vimrc and .vim for vcsh vimrc"
+[master (root-commit) e05a90c] Initial Commit of .vimrc and .vim for vcsh vimrc
+ 23 files changed, 1028 insertions(+)
+ create mode 100644 .vim/.gitkeep
+ create mode 100644 .vim/.netrwhist
+ create mode 100644 .vim/bundle/.gitkeep
+ create mode 100644 .vim/colors/.gitkeep
+ create mode 100644 .vim/colors/greens.vim
+ create mode 100644 .vim/doc/.gitkeep
+ create mode 100644 .vim/ftdetect/.gitkeep
+ create mode 100644 .vim/ftplugin/.gitkeep
+ create mode 100644 .vim/git.zip
+ create mode 100644 .vim/indent/.gitkeep
+ create mode 100644 .vim/macros/.gitkeep
+ create mode 100644 .vim/plugin/.gitkeep
+ create mode 100644 .vim/pw.vim
+ create mode 100644 .vim/spell/.gitkeep
+ create mode 100644 .vim/spell/en.latin1.add
+ create mode 100644 .vim/spell/en.latin1.add.spl
+ create mode 100644 .vim/spell/en.utf-8.add
+ create mode 100644 .vim/spell/en.utf-8.add.spl
+ create mode 100644 .vim/syntax/.gitkeep
+ create mode 100644 .vim/syntax/tmux.vim
+ create mode 100644 .vim/vimMap
+ create mode 100644 .vim/vimrcFkeys
+ create mode 100644 .vimrc
+
+[squee] 2014-11-19 10:32:12 -0800 ~>vcsh vimrc remote add origin gitosis@gitosis.temporalflux.org:dot/vimrc.git
+
+[squee] 2014-11-19 10:32:41 -0800 ~>vcsh vimrc push -u origin master
+Initialized empty Git repository in /home/gitosis/repositories/dot/vimrc.git/
+Counting objects: 20, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (16/16), done.
+Writing objects: 100% (20/20), 20.37 KiB | 0 bytes/s, done.
+Total 20 (delta 0), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/vimrc.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+[squee] 2014-11-19 10:36:24 -0800 ~>vcsh vimrc add -f .gitignore.d/vimrc
+
+[squee] 2014-11-19 10:36:43 -0800 ~>vcsh write-gitignore vimrc
+
+[squee] 2014-11-19 10:37:10 -0800 ~>rm /Users/Brian/.gitignore.d/vimrc.bak
+
+[squee] 2014-11-19 10:48:25 -0800 ~>vcsh vimrc commit -m "Adding gitignore.d/vimrc"
+[master 065f91e] Adding gitignore.d/vimrc
+ 1 file changed, 35 insertions(+)
+ create mode 100644 .gitignore.d/vimrc
+
+[squee] 2014-11-19 10:48:58 -0800 ~>vcsh vimrc push
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 542 bytes | 0 bytes/s, done.
+Total 4 (delta 0), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/vimrc.git
+   e05a90c..065f91e  master -> master
+
+[squee] 2014-11-19 10:49:08 -0800 ~>vcsh clone git@github.com:RichiH/vcsh_mr_template.git mr
+Initialized empty shared Git repository in /Users/Brian/.config/vcsh/repo.d/mr.git/
+Switched to a new branch 'master'
+remote: Counting objects: 21, done.
+remote: Total 21 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (21/21), done.
+From github.com:RichiH/vcsh_mr_template
+ * branch            master     -> FETCH_HEAD
+fatal: Not a valid object name origin/master
+merge: origin/master - not something we can merge
+
+[squee] 2014-11-19 10:55:42 -0800 ~>vcsh mr pull
+From github.com:RichiH/vcsh_mr_template
+ * [new branch]      master     -> origin/master
+
+[squee] 2014-11-19 10:56:43 -0800 ~>vcsh mr remote set-url origin gitosis@gitosis.temporalflux.org:dot/mr.git
+
+[squee] 2014-11-19 10:57:39 -0800 ~>vcsh mr push
+Initialized empty Git repository in /home/gitosis/repositories/dot/mr.git/
+Counting objects: 21, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (16/16), done.
+Writing objects: 100% (21/21), 1.70 KiB | 0 bytes/s, done.
+Total 21 (delta 2), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/mr.git
+ * [new branch]      master -> master
+
+[squee] 2014-11-19 11:00:45 -0800 ~>perl -pi -e 's#git://github.com/RichiH/vcsh_mr_template.git#gitosis\@gitosis.temporalflux.org:dot/mr.git#' .config/mr/available.d/mr.vcsh
+
+[squee] 2014-11-19 11:02:37 -0800 ~>cp .config/mr/available.d/mr.vcsh .config/mr/available.d/vimrc.vcsh
+
+[squee] 2014-11-19 11:03:41 -0800 ~>perl -pi -e 's/mr/vimrc/' .config/mr/available.d/vimrc.vcsh
+
+[squee] 2014-11-19 11:04:41 -0800 ~>cp .config/mr/available.d/vimrc.vcsh .config/mr/available.d/MYREPONAME.vcsh
+
+[squee] 2014-11-19 11:05:35 -0800 ~>perl -pi -e 's/vimrc/MYREPONAME/' .config/mr/available.d/MYREPONAME.vcsh
+
+[squee] 2014-11-19 11:12:40 -0800 ~>vcsh mr rm .config/mr/available.d/zsh.vcsh
+rm '.config/mr/available.d/zsh.vcsh'
+
+[squee] 2014-11-19 11:13:18 -0800 ~>vcsh mr add .config/mr/available.d/*
+
+[squee] 2014-11-19 11:15:16 -0800 ~>cd .config/mr/config.d/
+
+[squee] 2014-11-19 11:15:46 -0800 ~/.config/mr/config.d>ln -s ../available.d/vimrc.vcsh
+
+[squee] 2014-11-19 11:16:28 -0800 ~/.config/mr/config.d>vcsh mr add vimrc.vcsh
+
+[squee] 2014-11-19 11:17:03 -0800 ~>touch .gitignore.d/mr
+
+[squee] 2014-11-19 11:17:51 -0800 ~>vcsh mr add -f .gitignore.d/mr
+
+[squee] 2014-11-19 11:18:16 -0800 ~>vcsh write-gitignore mr
+
+[squee] 2014-11-19 11:19:19 -0800 ~>vcsh mr commit -m'Updating mr.git to my settings and configurations'
+[master adbe387] Updating mr.git to my settings and configurations
+ 7 files changed, 20 insertions(+), 3 deletions(-)
+ create mode 100644 .config/mr/available.d/MYREPONAME.vcsh
+ create mode 100644 .config/mr/available.d/tmux.vcsh
+ create mode 100644 .config/mr/available.d/vimrc.vcsh
+ delete mode 100644 .config/mr/available.d/zsh.vcsh
+ create mode 120000 .config/mr/config.d/vimrc.vcsh
+ create mode 100644 .gitignore.d/mr
+
+[squee] 2014-11-19 11:20:08 -0800 ~>vcsh mr push
+Counting objects: 19, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (13/13), 1.08 KiB | 0 bytes/s, done.
+Total 13 (delta 2), reused 0 (delta 0)
+To gitosis@gitosis.temporalflux.org:dot/mr.git
+   c213fce..adbe387  master -> master

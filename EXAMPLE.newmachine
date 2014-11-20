@@ -1,0 +1,55 @@
+[forsaken] kage 22:23 Wed ~>vcsh clone gitosis@gitosis.temporalflux.org:dot/mr.git
+
+[forsaken] kage 22:33 Wed ~>mr up
+mr update: /home/kage/.config/vcsh/repo.d/mr.git
+Already up-to-date.
+
+mr update: /home/kage/.config/vcsh/repo.d/tmux.git
+Already up-to-date.
+
+mr checkout: /home/kage/.config/vcsh/repo.d/vimrc.git
+Initialized empty shared Git repository in /home/kage/.config/vcsh/repo.d/vimrc.git/
+Switched to a new branch 'master'
+remote: Counting objects: 32, done.
+remote: Compressing objects: 100% (25/25), done.
+remote: Total 32 (delta 2), reused 0 (delta 0)
+Unpacking objects: 100% (32/32), done.
+From gitosis.temporalflux.org:dot/vimrc
+ * branch            master     -> FETCH_HEAD
+ * [new branch]      master     -> origin/master
+vcsh: error: '.vim/.gitkeep' exists.
+vcsh: error: '.vim/.netrwhist' exists.
+vcsh: error: '.vim/bundle/.gitkeep' exists.
+vcsh: error: '.vim/colors/.gitkeep' exists.
+vcsh: error: '.vim/colors/greens.vim' exists.
+vcsh: error: '.vim/doc/.gitkeep' exists.
+vcsh: error: '.vim/ftdetect/.gitkeep' exists.
+vcsh: error: '.vim/ftplugin/.gitkeep' exists.
+vcsh: error: '.vim/git.zip' exists.
+vcsh: error: '.vim/indent/.gitkeep' exists.
+vcsh: error: '.vim/macros/.gitkeep' exists.
+vcsh: error: '.vim/plugin/.gitkeep' exists.
+vcsh: error: '.vim/pw.vim' exists.
+vcsh: error: '.vim/spell/.gitkeep' exists.
+vcsh: error: '.vim/spell/en.latin1.add' exists.
+vcsh: error: '.vim/spell/en.latin1.add.spl' exists.
+vcsh: error: '.vim/spell/en.utf-8.add' exists.
+vcsh: error: '.vim/spell/en.utf-8.add.spl' exists.
+vcsh: error: '.vim/syntax/.gitkeep' exists.
+vcsh: error: '.vim/syntax/tmux.vim' exists.
+vcsh: error: '.vim/vimMap' exists.
+vcsh: error: '.vim/vimrcFkeys' exists.
+vcsh: error: '.vimrc' exists.
+vcsh: fatal: will stop after fetching and not try to merge!
+  Once this situation has been resolved, run 'vcsh vimrc pull' to finish cloning.
+mr checkout: command failed
+
+mr update: finished (2 ok; 1 failed)
+Exit 1
+
+[forsaken] kage 22:49 Wed ~>vcsh vimrc fetch --all
+Fetching origin
+
+[forsaken] kage 23:01 Wed ~>vcsh vimrc reset --hard origin/master
+HEAD is now at 8457646 Updating .gitignore.d/vimrc ; adding missing unignore
+

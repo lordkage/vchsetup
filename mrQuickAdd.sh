@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# FIXME - Add pre-fix
+
 _working_dir=$PWD
 _working_project_name=${PWD##*/}
 _working_project_url=$(git config --get remote.origin.url)
@@ -14,7 +16,7 @@ if [ ! -d ${_working_dir}/.git ]; then
 fi
 
 mr -c ${_mr_project_config} register
-sed -i -e "s#${HOME}#\${HOME}#" ${_mr_project_config}
+sed -pi -e "s#${HOME}#\${HOME}#" ${_mr_project_config}
 
 cat >>${_mr_project_config}<<_EOF_
 update = git remote prune origin && git pull

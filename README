@@ -1,3 +1,13 @@
+SOFTWARE
+ - vcsh by Richard Hartmann (RichiH); https://github.com/RichiH/vcsh
+ - mr/myrepos by Joey Hess (joeyh); https://github.com/joeyh/myrepos
+ - git-crypt by Andrew Ayer (AGWA); https://github.com/AGWA/git-crypt
+
+ASSUMED SOFTWARE
+ - git
+ - brew (Mac OS)
+ - build utils (Linux)
+
 grep forsaken EXAMPLE.vcsh | awk -F'~>' '{ print $NF }' | sed -e 's/tmux/vimrc/g'
 
 vcsh init vim

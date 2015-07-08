@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# FIXME - Add pre-fix
-
 if [[ $# -eq 2 ]]; then
    _git_repo_uri=$2
    IFS='./' read -ra _git_repo_uri_parts <<< "${_git_repo_uri}"
@@ -43,8 +41,16 @@ fi
 mr -c ${_mr_project_config} register
 sed -i '' -e "s#${HOME}#\${HOME}#" ${_mr_project_config}
 
+if [ $(command -v gem) ]; then
+   if [ $(gem list -i git-up) ]; then
+      _git_update_command='git up'
+   else
+      _git_update_command='git remote prune origin && git fetch --all && git fetch --tags && git pull'
+   fi
+fi
+
 cat >>${_mr_project_config}<<_EOF_
-update = git remote prune origin && git fetch --all && git fetch --tags && git pull
+update = ${_git_update_command}
 push = :
 commit = :
 _EOF_
@@ -56,9 +62,20 @@ cd ${_working_dir}
 vcsh mr status --short --branch -unormal
 
 cat >/dev/stdout<<_EOF_
-Remember to add the new config to mr's repo
+
+Final manual commands:
+
+rm -v ~/${_mr_configured_dir}/${_working_project_config_name}
 
 vcsh mr add ${_mr_project_config}
 vcsh mr commit -m "Adding ${_working_project_name}"
 vcsh mr push
+
 _EOF_
+
+if [ $(command -v stree) ]; then
+   cat >/dev/stdout<<_EOF_
+stree ${_working_dir}
+
+_EOF_
+fi

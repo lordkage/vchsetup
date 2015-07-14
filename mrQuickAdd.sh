@@ -65,7 +65,7 @@ cat >/dev/stdout<<_EOF_
 
 Final manual commands:
 
-rm -v ~/${_mr_configured_dir}/${_working_project_config_name}
+rm -v ${_mr_configured_dir}/${_working_project_config_name}
 
 vcsh mr add ${_mr_project_config}
 vcsh mr commit -m "Adding ${_working_project_name}"

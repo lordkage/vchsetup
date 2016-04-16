@@ -20,14 +20,13 @@ _mr_repo_file="vcsh.${_config_name}"
 _mr_repo_config="${_mr_available_dir}/${_mr_repo_file}"
 _mr_configured_dir="${_mr_configuration_dir}/config.d"
 
-echo "Using ${HOME} as base for all actions within script\n"
+echo -e "Using ${HOME} as base for all actions within script\n"
 
-_num_commits=$(vcsh ${_config_name} log --oneline | grep -c .)
+vcsh ${_config_name} log -n 1 --oneline > /dev/null 2>&1
 xc=${PIPESTATUS[0]}
 if [ ${xc} -ne 0 ]; then
    # Create the remote repository named: dot/${_config_name}
    vcsh init ${_config_name}
-   _num_commits=0
    _commit_msg="Initial commit of vcsh ${_config_name}"
 else
    _commit_msg="Assisted commit of vcsh ${_config_name}"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o pipefail
+
 PROGNAME=$(basename ${0})
 PROGDIR=$(dirname ${0})
 VERSION='0.0.1'
@@ -56,17 +58,38 @@ fi
 read -e -p "Enter your myrepos URI [$myrepos]: " uri
 export myrepos_uri=${uri:-$myrepos}
 
-if [ $INSTYPE == 'manual' ] && ! hash ronn 2>/dev/null; then
-   echo -e "\033[31minstall ronn gem\033[0m"
-   exit 128
+if [ $INSTYPE == 'manual' ]; then
+   failed=0
+   # vcsh uses to make doc
+   echo -ne "\033[32mChecking for ronn gem -> \033[0m "
+   if ! hash ronn 2>/dev/null; then
+      echo -e "\033[31mMISSING\033[0m"
+      failed=1
+   else
+      echo -e "\033[93mFOUND\033[0m"
+   fi
+   VCSH_PERL_MOD=" \
+                  Shell::Command \
+                  Test::Most \
+                 "
+   for MOD in $VCSH_PERL_MOD; do
+      echo -ne "\033[32mChecking for perl module '${MOD}' -> \033[0m "
+      perl -e "use ${MOD};" > /dev/null 2>&1
+      xc=$?;
+      if [ $xc -eq 0 ]; then
+         echo -e "\033[93mFOUND\033[0m"
+      else
+         echo -e "\033[31mMISSING\033[0m"
+         failed=1
+      fi
+   done
+   if [ $failed -ne 0 ]; then exit 128; fi
 fi
-
-exit
 
 if [[ $OSVER == unknown ]]; then
    echo "Don't know what to do; exiting, badly."
    exit 1
-elif [[ $OSTYPE == darwin* ]]; then
+elif [[ $INSTYPE == brew ]]; then
 
    echo -e "\033[32mUpdate Homebrew\033[0m"
    brew update
@@ -87,7 +110,7 @@ elif [[ $OSTYPE == darwin* ]]; then
       echo
    done
 
-elif [[ $OSTYPE == linux* ]]; then
+elif [[ $INSTYPE == manual ]]; then
 
    echo -e "\033[32mChecking local directories\033[0m"
    mkdir -vp ${VCHDIR} ${MRGIT} ${VCSHGIT} ${DESTDIR}

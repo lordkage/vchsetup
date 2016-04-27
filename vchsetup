@@ -1,25 +1,67 @@
 #!/bin/bash
 
+PROGNAME=$(basename ${0})
+PROGDIR=$(dirname ${0})
+VERSION='0.0.1'
+
+echo ''
+echo "vch setup and update script (version: $VERSION)"
+echo ''
+
+# rcfile
+. ${PROGDIR}/config.sh
+if [ -e ${PROGDIR}/${PROGNAME}.local ]; then
+   . ${PROGDIR}/${PROGNAME}.local
+elif [ -e ~/.${PROGNAME} ]; then
+   . ~/.${PROGNAME}
+fi
+
 /bin/echo -n "OS type: "
 case "$OSTYPE" in
-  darwin*)  echo -e "\033[32mOSX\033[0m" ; export OSVER='OSX' ;; 
-  linux*)   echo -e "\033[32mLINUX\033[0m" ; export OSVER='LINUX' ;;
-  *)        echo -e "unknown: \033[31m$OSTYPE\033[0m" ; export OSVER='unknown' ;;
+  darwin*)  echo -e "\033[32mOSX\033[0m" ; export OSVER='OSX' ; export INSTYPE='brew' ;;
+  linux*)   echo -e "\033[32mLINUX\033[0m" ; export OSVER='LINUX' ; export INSTYPE='manual' ;;
+  *)        echo -e "unknown: \033[31m$OSTYPE\033[0m" ; export OSVER='unknown' ; export INSTYPE='manual' ;;
 esac
+echo "Install Type: $INSTYPE"
 echo
-
-if [ ! $OSVER == 'OSX' ] && [ ! $(which ronn) ]; then
-   echo -e "\033[31minstall ronn gem\033[0m"
-   exit 128
-fi
 
 APPLIST='myrepos vcsh git-crypt'
 
 VCHDIR="${HOME}/.vch"
 MRGIT="${VCHDIR}/myrepos"
+MRBRANCH='master'
 VCSHGIT="${VCHDIR}/vcsh"
+VCSHBRANCH='release'
 GITCRYPT="${VCHDIR}/git-crypt"
+GITCRYPTBRANCH='master'
 DESTDIR="${VCHDIR}"
+CONFDIR="${HOME}/.config"
+MRDIR="${CONFDIR}/mr"
+VCSHDIR="${CONFDIR}/vcsh"
+SHORTNAME=$(hostname -s)
+
+if [ $OSVER == 'OSX' ]; then
+   read -e -p "Override install type $INSTYPE? [yN] " override
+   case $override in
+      [yY]*)
+         echo "Overriding to manual"
+         INSTYPE='manual'
+         ;;
+      *)
+         echo "Not changing install type"
+         ;;
+   esac
+fi
+
+read -e -p "Enter your myrepos URI [$myrepos]: " uri
+export myrepos_uri=${uri:-$myrepos}
+
+if [ $INSTYPE == 'manual' ] && ! hash ronn 2>/dev/null; then
+   echo -e "\033[31minstall ronn gem\033[0m"
+   exit 128
+fi
+
+exit
 
 if [[ $OSVER == unknown ]]; then
    echo "Don't know what to do; exiting, badly."
@@ -28,7 +70,7 @@ elif [[ $OSTYPE == darwin* ]]; then
 
    echo -e "\033[32mUpdate Homebrew\033[0m"
    brew update
-   xc=$?; if [ $xc -ne 0 ]; then exit $nc; fi
+   xc=$?; if [ $xc -ne 0 ]; then exit $xc; fi
    echo
 
    for APP in $APPLIST; do
@@ -57,8 +99,12 @@ elif [[ $OSTYPE == linux* ]]; then
       git clone git@github.com:joeyh/myrepos.git ${MRGIT}
    else
       echo -e "\033[96mUpdating GIT repo of myrepos\033[0m"
+      git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git remote prune origin
+      git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git fetch --all
+      git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git fetch --tags
       git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git pull
    fi
+   git --work-tree=${MRGIT} --git-dir=${MRGIT}/.git checkout ${MRBRANCH}
    echo -e "\033[93mInstalling myrepos\033[0m"
    make -C ${MRGIT} DESTDIR=${DESTDIR} install
    echo
@@ -69,8 +115,12 @@ elif [[ $OSTYPE == linux* ]]; then
       git clone git@github.com:RichiH/vcsh.git ${VCSHGIT}
    else
       echo -e "\033[96mUpdating GIT repo of vcsh\033[0m"
+      git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git remote prune origin
+      git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git fetch --all
+      git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git fetch --tags
       git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git pull
    fi
+   git --work-tree=${VCSHGIT} --git-dir=${VCSHGIT}/.git checkout ${VCSHBRANCH}
    echo -e "\033[93mInstalling vcsh\033[0m"
    make -C ${VCSHGIT} DESTDIR=${DESTDIR} install
    echo
@@ -83,8 +133,12 @@ elif [[ $OSTYPE == linux* ]]; then
       echo -e "\033[95mCleaning GIT repo git-crypt\033[0m"
       make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr clean
       echo -e "\033[96mUpdating GIT repo of git-crypt\033[0m"
+      git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git remote prune origin
+      git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git fetch --all
+      git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git fetch --tags
       git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git pull
    fi
+   git --work-tree=${GITCRYPT} --git-dir=${GITCRYPT}/.git checkout ${GITCRYPTBRANCH}
    echo -e "\033[95mBuilding git-crypt\033[0m"
    make -C ${GITCRYPT} DESTDIR=${DESTDIR} PREFIX=/usr
    echo -e "\033[93mInstalling git-crypt\033[0m"
@@ -118,6 +172,11 @@ echo; echo $KEY; echo
 read -p 'Does it exist in the GIT services configurations?'
 
 # IMP - Add repo collection/creation
+# vcsh clone ${myrepos_uri}
+# touch ${MRDIR}/hosts.d/${SHORTNAME}
+# cd ${MRDIR}/config.d && ln -s ../hosts.d/${SHORTNAME} host
+# vcsh mr add ${MRDIR}/hosts.d/${SHORTNAME}
+# vcsh mr commit ${MRDIR}/hosts.d/${SHORTNAME}
 
 echo ; echo
 

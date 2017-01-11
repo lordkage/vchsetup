@@ -34,7 +34,7 @@ vcsh upgrade foo
 mkdir ~/.gitattributes.d
 touch ~/.gitattributes.d/foo
  - Add it to git your git repo
-vcsh repo add ~/.gitattributes.d/foo
+vcsh foo add ~/.gitattributes.d/foo
  - Follow the readme of git-crypt until the .gitattributes part
  - Instead of .gitattributes, put the config in ~/.gitattributes.d/foo
 cat >~/.gitattrubutes.d/foo<<EOD

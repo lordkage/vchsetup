@@ -48,6 +48,9 @@ until [[ -z "$_dot_file" ]]; do
    read -p '>>> ' -e _dot_file
 done
 
+# FIXME - The files are added to the repo before the gitattributes are in affect
+# `vcsh [repo] crypt status -f` fixes this... Or order of add.
+
 _user_resp='n'
 read -p "Any dot files needing encryption? " -e _user_resp
 if [[ ${_user_resp} == [Yy]* ]]; then

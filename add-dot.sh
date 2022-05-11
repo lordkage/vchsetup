@@ -77,6 +77,8 @@ touch ${HOME}/.gitignore.d/${_config_name}
 vcsh ${_config_name} add ${HOME}/.gitignore.d/${_config_name}
 vcsh write-gitignore ${_config_name}
 
+# FIXME - Needs to add the `.gitattributes.d/[repo]` and `.gitignore.d/[repo]` to the vcsh's .gitignore.d/vcsh
+
 # FIXME - Add check for branch.master.rebase
 cat >/dev/stdout<<_EOF_
 

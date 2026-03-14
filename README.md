@@ -9,15 +9,15 @@ a version controled home.
 
 Giving credit to the software projects I am wrapping
 
- - vcsh by Richard Hartmann (RichiH); https://github.com/RichiH/vcsh
- - mr/myrepos by Joey Hess (joeyh); https://github.com/joeyh/myrepos
- - git-crypt by Andrew Ayer (AGWA); https://github.com/AGWA/git-crypt
+- vcsh by Richard Hartmann (RichiH); [github: RichiH/vcsh](https://github.com/RichiH/vcsh)
+- mr/myrepos by Joey Hess (joeyh); [github: joeyh/myrepos](https://github.com/joeyh/myrepos)
+- git-crypt by Andrew Ayer (AGWA); [github: AGWA/git-crypt](https://github.com/AGWA/git-crypt)
 
 ## Assumed Software
 
- - git
- - brew (Mac OS)
- - internet utils (Linux)
+- git
+- brew (Mac OS)
+- internet utils (Linux)
 
 ## Quick Start
 
@@ -51,32 +51,37 @@ vcsh vim push
 
 ### Assumptions
 
- - vcsh installed, up-to-date: older than 2014-02-21
- - git-crypt installed
- - VCSH repo named 'foo'
+- vcsh installed, up-to-date: older than 2014-02-21
+- git-crypt installed
+- VCSH repo named 'foo'
 
 #### Actions
 
- - Update your vcsh repo
-   `vcsh upgrade foo`
- - Create the gitattributes file for this repo
-   ```bash
-   mkdir ~/.gitattributes.d
-   touch ~/.gitattributes.d/foo
-   ```
- - Add it to git your git repo
-   `vcsh foo add ~/.gitattributes.d/foo`
- - Follow the readme of git-crypt until the .gitattributes part
- - Instead of .gitattributes, put the config in ~/.gitattributes.d/foo
-   ```bash
-   cat >~/.gitattrubutes.d/foo<<EOD
-   secret filter=git-crypt diff=git-crypt
-   passwds filter=git-crypt diff=git-crypt
-   *magic* filter=git-crypt diff=git-crypt
-   EOD
-   ```
- - Continue the readme of git-crypt
-   ```bash
-   git-crypt init
-   git-crypt add-gpg-user DFE3287A
-   ```
+- Update your vcsh repo
+  `vcsh upgrade foo`
+- Create the gitattributes file for this repo
+
+  ```bash
+  mkdir ~/.gitattributes.d
+  touch ~/.gitattributes.d/foo
+  ```
+
+- Add it to git your git repo
+  `vcsh foo add ~/.gitattributes.d/foo`
+- Follow the readme of git-crypt until the .gitattributes part
+- Instead of .gitattributes, put the config in ~/.gitattributes.d/foo
+
+  ```bash
+  cat >~/.gitattrubutes.d/foo<<EOD
+  secret filter=git-crypt diff=git-crypt
+  passwds filter=git-crypt diff=git-crypt
+  *magic* filter=git-crypt diff=git-crypt
+  EOD
+  ```
+
+- Continue the readme of git-crypt
+
+  ```bash
+  git-crypt init
+  git-crypt add-gpg-user DFE3287A
+  ```
